@@ -3,11 +3,17 @@ class Bowling
         @total_score = 0
         @scores = []
         @temp = []
+        @frame_score = []
     end
     
     def total_score
         @total_score
     end
+    
+    def frame_score(frame)
+       @frame_score[frame - 1] 
+    end
+    
     def add_score(pins)
         @temp << pins 
         if @temp.size == 2 || strike?(@temp)
@@ -25,6 +31,8 @@ class Bowling
             else
                 @total_score += score.inject(:+)
             end
+            #合計をフレームごとに記録しておく
+            @frame_score << @total_score
        end
     end
     
