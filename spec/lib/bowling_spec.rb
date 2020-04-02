@@ -74,6 +74,76 @@ describe "ボウリングのスコア計算" do
            end
         end
         
+        context "ストライクを取った場合" do
+           it "ストライクボーナスが加算されること" do
+              #第１フレーム
+              @game.add_score(10)
+              #第２フレーム
+              @game.add_score(5)
+              @game.add_score(4)
+              #以降はすべてガター
+              add_many_scores(16,0)
+              #合計を計算
+              @game.calc_score
+              #期待する値
+              expect(@game.total score).to eq 28
+           end
+        end
+        
+        context "ダブルを取った場合" do
+           it "それぞれのストライクボーナスが加算されること" do
+              #第１フレーム
+              @game.add_score(10)
+              #第２フレーム
+              @game.add_score(10)
+              #第３フレーム
+              @game.add_score(5)
+              @game.add_score(4)
+              #以降はすべてガター
+              add_many_scores(14,0)
+              #合計を計算
+              @game.calc_score
+              #期待する値
+              expect(@game.total score).to eq 53
+           end
+        end
+        
+        context "ターキーを取った場合" do
+           it "それぞれのストライクボーナスが加算されること" do
+              #第１フレーム
+              @game.add_score(10)
+              #第２フレーム
+              @game.add_score(10)
+              #第３フレーム
+              @game.add_score(5)
+              @game.add_score(4)
+              #以降はすべてガター
+              add_many_scores(12,0)
+              #合計を計算
+              @game.calc_score
+              #期待する値
+              expect(@game.total score).to eq 83
+           end
+        end
+        
+        context "最終フレームでストライクを取った場合" do
+           it "ストライクボーナスが加算されないこと" do
+              #第１フレーム
+              @game.add_score(10)
+              #第２フレーム
+              @game.add_score(5)
+              @game.add_score(4)
+              #3~9はすべてガター
+              add_many_scores(14,0)
+              #最終フレームでストライク
+              @game.add_score(10)
+              #合計を計算
+              @game.calc_score
+              #期待する値
+              expect(@game.total score).to eq 38
+           end
+        end
+        
     end
 end
 
