@@ -10,7 +10,7 @@ class Bowling
     end
     def add_score(pins)
         @temp << pins 
-        if @temp.size == 2
+        if @temp.size == 2 || strike?(@temp)
            @scores << @temp
            @temp = []
         end
@@ -18,7 +18,15 @@ class Bowling
     
     def calc_score
        @scores.each.with_index(1) do |score,index|
-            if spare?(score) && not_last_frame?(index)
+            if strike?(score) && not_last_frame?(index)
+                
+                if strike?(@scores[index]) && not_last_frame?(index + 1)
+                    @total_score += 20 + @scores[index + 1].first
+                else
+                    @total_score += 10 + @scores[index].inject(:+)
+                end
+                
+            elsif spare?(score) && not_last_frame?(index)
                 @total_score += calc_spare_bonus(index)
             else
                 @total_score += score.inject(:+)
@@ -41,6 +49,9 @@ class Bowling
        10 + @scores [index].first
     end
 
+    def strike?(score)
+       score.first == 10 
+    end
 
     
 end
