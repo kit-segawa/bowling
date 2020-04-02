@@ -153,4 +153,48 @@ def add_many_scores(count,pins)
         end
 end
 
+describe "フレームごとの合計" do
+   context "全ての投球で1品ずつ倒した場合" do
+      it "1フレーム目の合計が２になること" do
+         add_many_scores(20,1)
+         #合計を計算
+         @game.calc_score
+         expect(@game.frame_score(1)).to eq 2
+      end
+   end
+   
+   context "スペアをとった場合" do
+       it "スペアボーナスが加算されること" do
+          #第１フレーム
+          @game.add_score(3)
+          @game.add_score(7)
+          #第２フレーム
+          @game.add_score(4)
+          #それ以降
+          add_many_scores(17,0)
+          #合計を計算
+          @game.calc_score
+          #期待する値
+          expect(@game.total score).to eq 14
+       end
+    end
+    
+    context "ストライクを取った場合" do
+       it "ストライクボーナスが加算されること" do
+          #第１フレーム
+          @game.add_score(10)
+          #第２フレーム
+          @game.add_score(5)
+          @game.add_score(4)
+          #以降はすべてガター
+          add_many_scores(16,0)
+          #合計を計算
+          @game.calc_score
+          #期待する値
+          expect(@game.total score).to eq 19
+       end
+    end
+    
+end
+
 
